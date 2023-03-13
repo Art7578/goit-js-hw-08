@@ -7,20 +7,24 @@ const LOCALSTORAGE_KEY = 'feedback-form-state';
 
 form.addEventListener(
   'input',
-  throttle(e => {
+  throttle((e) => {
     const objectToSave = { email: email.value, message: message.value };
     localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(objectToSave));
   }, 500)
 );
 
-form.addEventListener('submit', e => {
+form.addEventListener('submit', (e) => {
   e.preventDefault();
-  console.log({ email: email.value, message: message.value });
-  form.reset();
-  localStorage.removeItem(LOCALSTORAGE_KEY);
+  if (email.value.trim() === '' || message.value.trim() === '') {
+    alert('Please fill in all fields.');
+  } else {
+    console.log({ email: email.value, message: message.value });
+    form.reset();
+    localStorage.removeItem(LOCALSTORAGE_KEY);
+  }
 });
 
-const load = key => {
+const load = (key) => {
   try {
     const serializedState = localStorage.getItem(key);
     return serializedState === null ? undefined : JSON.parse(serializedState);
